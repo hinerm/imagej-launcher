@@ -398,6 +398,18 @@ void *initialize_java_home_and_library_path(void)
 	enter("initialize_java_home_and_library_path");
 	int i;
 
+	int arrayLength = sizeof(default_library_paths)/sizeof(default_library_paths[0]);
+
+	// First, search for the native library in specified java home
+	const char *java_home = get_java_home();
+	if (java_home) {
+		debug("java_home = %s", java_home);
+		struct string *buffer = string_initf("%s", java_home);
+		for (i=0; i<arrayLength; i++)
+			search_for_java(java_home, default_library_paths[i]);
+		string_release(buffer);
+	}
+
 	struct string *bundled_dir;
 
 	// Identify the platform-specific subdirectory in /java to search for a bundled JVM
@@ -415,10 +427,10 @@ void *initialize_java_home_and_library_path(void)
 	// Search for each possible java for the current platform.
 	// This will update relative_java_home and (default_)library_path,
 	// and will short-circuit once these are found.
-	int arrayLength = sizeof(default_library_paths)/sizeof(default_library_paths[0]);
 	for (i=0; i<arrayLength; i++)
 		search_for_java(bundled_dir, default_library_paths[i]);
 	string_release(bundled_dir);
+
 	leave();
 }
 
@@ -432,6 +444,8 @@ void search_for_java(struct string *bundled_dir, const char *java_library_path)
 {
 	if (default_library_path) return; // already found
 	enter("search_for_java");
+	debug("bundled_dir = %s", bundled_dir->buffer);
+	debug("java_library_path = %s", java_library_path);
 
 	int depth = 1;
 	struct string *search_path, *result;
