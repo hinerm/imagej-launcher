@@ -84,8 +84,6 @@ jobs:
       with:
         name: ij-mac-launcher
         path: target/ImageJ-linux
-      run: |
-        ls target
 
     - name: Upload Win Launcher
       if: runner.os == 'Windows'
@@ -93,8 +91,6 @@ jobs:
       with:
         name: ij-mac-launcher
         path: target/ImageJ-win64.exe
-      run: |
-        ls target
 
     - name: Upload Linux Launcher
       if: runner.os == 'Linux'
@@ -102,6 +98,8 @@ jobs:
       with:
         name: ij-mac-launcher
         path: target/ImageJ-macosx
+
+    - name: Show target
       run: |
         ls target
 
