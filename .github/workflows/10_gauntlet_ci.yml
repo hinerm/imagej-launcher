@@ -78,6 +78,10 @@ jobs:
         key: m2-cache${{ hashFiles('**/pom.xml') }}
         restore-keys: m2-cache
 
+    - name: Build
+      run: |
+        mvn clean install
+
     - name: Upload Mac Launcher
       if: runner.os == 'macOS'
       uses: actions/upload-artifact@v2
