@@ -78,17 +78,24 @@ jobs:
         key: m2-cache${{ hashFiles('**/pom.xml') }}
         restore-keys: m2-cache
 
-    - name: Run the Gauntlet
-      id: run_gauntlet
-      run: |
-        bash run-java-gauntlet.sh
-        echo "::set-output name=FAILED_COUNT::$(find target/gauntlet/ -name FAILED* | wc -l)"
-        echo "::set-output name=RUN_COUNT::$(ls target/gauntlet/ | wc -l)"
+    - name: Upload Mac Launcher
+      if: runner.os == 'macOS'
+      uses: actions/upload-artifact@v2
+      with:
+        name: ij-mac-launcher
+        path: ./ImageJ-linux
 
-    - name: Fail Gauntlet Output
-      if: steps.run_gauntlet.outputs.FAILED_COUNT > 0
-      run: |
-        echo "Gauntlet Failed:"
-        ls target/gauntlet
-        cat target/gauntlet/FAILED*
-        exit 1
+    - name: Upload Win Launcher
+      if: runner.os == 'Windows'
+      uses: actions/upload-artifact@v2
+      with:
+        name: ij-mac-launcher
+        path: ./ImageJ-win64.exe
+
+    - name: Upload Linux Launcher
+      if: runner.os == 'Linux'
+      uses: actions/upload-artifact@v2
+      with:
+        name: ij-mac-launcher
+        path: ./ImageJ-macosx
+
