@@ -87,21 +87,21 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ij-mac-launcher
-        path: target/ImageJ-linux
+        path: target/ImageJ-macosx
 
     - name: Upload Win Launcher
       if: runner.os == 'Windows'
       uses: actions/upload-artifact@v2
       with:
-        name: ij-mac-launcher
+        name: ij-win-launcher
         path: target/ImageJ-win64.exe
 
     - name: Upload Linux Launcher
       if: runner.os == 'Linux'
       uses: actions/upload-artifact@v2
       with:
-        name: ij-mac-launcher
-        path: target/ImageJ-macosx
+        name: ij-lin-launcher
+        path: target/ImageJ-linux64
 
     - name: Show target
       run: |
