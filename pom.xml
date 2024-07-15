@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<name>ImageJ Launcher</name>
-	<description>The executable which runs ImageJ. Its purpose is also to make sure that updates downloaded by the ImageJ Updater will be put into place before starting the Java Virtual Machine. It was formerly known as the Fiji launcher.</description>
+	<description>Library for supporting the ImageJ startup process. It was formerly known as the Fiji launcher and included a native component before migrating to Jaunch.</description>
 	<url>https://imagej.net/Launcher</url>
 	<inceptionYear>2007</inceptionYear>
 	<organization>
@@ -192,103 +192,10 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>make</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>run</goal>
-						</goals>
-						<configuration>
-							<target>
-								<exec executable="cmake" dir="${project.build.directory}" failonerror="true">
-									<arg line="${cmake.generator.option} ${basedir} -DTARGET_ARCHITECTURE=${target.architecture} -DDEBUG_OPTION=${debug.option}" />
-								</exec>
-								<exec executable="${make.binary}" dir="${project.build.directory}" failonerror="true">
-									<arg line="VERBOSE=1" />
-								</exec>
-							</target>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 	</build>
 
 	<profiles>
-		<profile>
-			<id>amd64-Linux</id>
-			<activation>
-				<os>
-					<name>Linux</name>
-					<arch>amd64</arch>
-				</os>
-			</activation>
-			<properties>
-				<ij.executable.name>ImageJ-linux64.exe</ij.executable.name>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>i386-Linux</id>
-			<activation>
-				<os>
-					<name>Linux</name>
-					<arch>i386</arch>
-				</os>
-			</activation>
-			<properties>
-				<ij.executable.name>ImageJ-linux32.exe</ij.executable.name>
-				<target.architecture>x86</target.architecture>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>i386-Windows</id>
-			<activation>
-				<os>
-					<family>windows</family>
-					<arch>x86</arch>
-				</os>
-			</activation>
-			<properties>
-				<ij.executable.name>ImageJ-win32.exe</ij.executable.name>
-				<target.architecture>x86</target.architecture>
-				<make.binary>mingw32-make</make.binary>
-				<cmake.generator.option>-G "MinGW Makefiles"</cmake.generator.option>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>amd64-Windows</id>
-			<activation>
-				<os>
-					<family>windows</family>
-					<arch>amd64</arch>
-				</os>
-			</activation>
-			<properties>
-				<ij.executable.name>ImageJ-win64.exe</ij.executable.name>
-				<make.binary>mingw32-make</make.binary>
-				<cmake.generator.option>-G "MinGW Makefiles"</cmake.generator.option>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>macOS</id>
-			<activation>
-				<os>
-					<name>Mac OS X</name>
-				</os>
-			</activation>
-			<properties>
-				<ij.executable.name>ImageJ-macosx.exe</ij.executable.name>
-			</properties>
-		</profile>
-
 		<profile>
 			<id>debug</id>
 			<properties>
